@@ -1,1 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Character Motion Landing Page</title>
+  <meta name="description" content="A one-page landing site showcasing the Character Posture Shift motion video." />
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --bg-soft: rgba(255,255,255,0.72);
+      --text: #111827;
+      --muted: #4b5563;
+      --line: rgba(17,24,39,0.12);
+      --accent: #4f46e5;
+      --accent-2: #7c3aed;
+      --shadow: 0 18px 40px rgba(17,24,39,0.10);
+    }
 
+    body.dark {
+      --bg: #0b1020;
+      --bg-soft: rgba(17,24,39,0.72);
+      --text: #f9fafb;
+      --muted: #c7d2fe;
+      --line: rgba(255,255,255,0.14);
+      --accent: #8b5cf6;
+      --accent-2: #22d3ee;
+      --shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(79,70,229,0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(124,58,237,0.16), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--bg) 72%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 16px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.05rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button, .btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+    }
+
+    button:hover, .btn:hover { transform: translateY(-1px); }
+
+    .hero {
+      padding: 80px 0 44px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.8rem);
+      line-height: 0.95;
+      margin: 0 0 18px;
+      letter-spacing: -0.05em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      font-size: 1.08rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin: 0 0 24px;
+      max-width: 58ch;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .primary {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white;
+      border: none;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .video-card {
+      padding: 14px;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      border-radius: 20px;
+      background: #000;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .video-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 4px 2px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      padding: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+    }
+
+    section {
+      padding: 26px 0;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -0.04em;
+      margin: 0 0 10px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature {
+      padding: 22px;
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .cta {
+      padding: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 26px 0 70px;
+    }
+
+    .cta p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 22px 0 40px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid, .features, .stats, .cta {
+        grid-template-columns: 1fr;
+      }
+      .cta {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand" data-i18n="brand">Character Motion</div>
+      <div class="controls">
+        <button id="langToggle" type="button">한국어</button>
+        <button id="themeToggle" type="button">🌙 Dark</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow" data-i18n="eyebrow">Motion Demo • One-Page Showcase</span>
+          <h1>
+            <span data-i18n="heroLine1">A smooth</span><br />
+            <span class="gradient-text" data-i18n="heroLine2">character posture shift</span>
+          </h1>
+          <p class="lead" data-i18n="lead">
+            This landing page presents a clean, visual-first showcase for a character animation clip. It is built as a lightweight one-page website for GitHub Pages, with bilingual support and an instant light/dark theme switch.
+          </p>
+          <div class="hero-actions">
+            <a href="#video" class="btn primary" data-i18n="watchNow">Watch the video</a>
+            <a href="#details" class="btn" data-i18n="learnMore">Learn more</a>
+          </div>
+          <div class="stats">
+            <div class="card stat">
+              <strong data-i18n="stat1Num">One page</strong>
+              <span data-i18n="stat1Label">Simple deployment through GitHub Pages</span>
+            </div>
+            <div class="card stat">
+              <strong data-i18n="stat2Num">2 modes</strong>
+              <span data-i18n="stat2Label">Light and dark themes for flexible viewing</span>
+            </div>
+            <div class="card stat">
+              <strong data-i18n="stat3Num">2 languages</strong>
+              <span data-i18n="stat3Label">English and Korean with one-click switching</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card video-card" id="video">
+          <video controls playsinline preload="metadata" poster="">
+            <source src="Character_posture_shift_202603231405.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="video-meta">
+            <span data-i18n="videoCaption">Featured video: Character_posture_shift_202603231405.mp4</span>
+            <span data-i18n="videoHint">Place the MP4 in the same folder as this HTML file.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" id="details">
+      <div class="section-head">
+        <h2 data-i18n="sectionTitle">Designed to be clear, elegant, and easy to publish</h2>
+        <p data-i18n="sectionDesc">
+          The structure is intentionally minimal so you can upload a single HTML file and your video asset to GitHub, enable GitHub Pages, and immediately share a polished presentation page.
+        </p>
+      </div>
+      <div class="features">
+        <article class="card feature">
+          <h3 data-i18n="f1Title">Visual-first storytelling</h3>
+          <p data-i18n="f1Desc">The layout puts the motion clip at the center, supported by short explanatory text and clean calls to action.</p>
+        </article>
+        <article class="card feature">
+          <h3 data-i18n="f2Title">Built for fast publishing</h3>
+          <p data-i18n="f2Desc">You can use this file as your index page, upload it with the MP4, and publish it directly through GitHub Pages with no framework required.</p>
+        </article>
+        <article class="card feature">
+          <h3 data-i18n="f3Title">Flexible user experience</h3>
+          <p data-i18n="f3Desc">The page includes both language and theme toggles, making it easy to present your work to different audiences in different viewing environments.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="card cta">
+        <div>
+          <h2 data-i18n="ctaTitle">Ready to publish</h2>
+          <p data-i18n="ctaDesc">Rename this file to index.html, keep the video in the same folder, upload both to your GitHub repository, and turn on GitHub Pages.</p>
+        </div>
+        <a class="btn primary" href="#video" data-i18n="ctaButton">Preview the motion</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span data-i18n="footer">One-page landing page template for a character motion showcase.</span>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        brand: "Character Motion",
+        eyebrow: "Motion Demo • One-Page Showcase",
+        heroLine1: "A smooth",
+        heroLine2: "character posture shift",
+        lead: "This landing page presents a clean, visual-first showcase for a character animation clip. It is built as a lightweight one-page website for GitHub Pages, with bilingual support and an instant light/dark theme switch.",
+        watchNow: "Watch the video",
+        learnMore: "Learn more",
+        stat1Num: "One page",
+        stat1Label: "Simple deployment through GitHub Pages",
+        stat2Num: "2 modes",
+        stat2Label: "Light and dark themes for flexible viewing",
+        stat3Num: "2 languages",
+        stat3Label: "English and Korean with one-click switching",
+        videoCaption: "Featured video: Character_posture_shift_202603231405.mp4",
+        videoHint: "Place the MP4 in the same folder as this HTML file.",
+        sectionTitle: "Designed to be clear, elegant, and easy to publish",
+        sectionDesc: "The structure is intentionally minimal so you can upload a single HTML file and your video asset to GitHub, enable GitHub Pages, and immediately share a polished presentation page.",
+        f1Title: "Visual-first storytelling",
+        f1Desc: "The layout puts the motion clip at the center, supported by short explanatory text and clean calls to action.",
+        f2Title: "Built for fast publishing",
+        f2Desc: "You can use this file as your index page, upload it with the MP4, and publish it directly through GitHub Pages with no framework required.",
+        f3Title: "Flexible user experience",
+        f3Desc: "The page includes both language and theme toggles, making it easy to present your work to different audiences in different viewing environments.",
+        ctaTitle: "Ready to publish",
+        ctaDesc: "Rename this file to index.html, keep the video in the same folder, upload both to your GitHub repository, and turn on GitHub Pages.",
+        ctaButton: "Preview the motion",
+        footer: "One-page landing page template for a character motion showcase."
+      },
+      ko: {
+        brand: "캐릭터 모션",
+        eyebrow: "모션 데모 • 원페이지 쇼케이스",
+        heroLine1: "부드럽게 전환되는",
+        heroLine2: "캐릭터 포즈 변화",
+        lead: "이 랜딩 페이지는 캐릭터 애니메이션 영상을 깔끔하고 직관적으로 보여주기 위한 원페이지 웹사이트입니다. GitHub Pages에 바로 올릴 수 있도록 가볍게 제작되었고, 한국어/영어 전환과 라이트/다크 모드를 함께 지원합니다.",
+        watchNow: "영상 보기",
+        learnMore: "더 알아보기",
+        stat1Num: "원페이지",
+        stat1Label: "GitHub Pages로 간단하게 배포 가능",
+        stat2Num: "2가지 모드",
+        stat2Label: "라이트/다크 테마 즉시 전환",
+        stat3Num: "2개 언어",
+        stat3Label: "영어/한국어 원클릭 전환 지원",
+        videoCaption: "대표 영상: Character_posture_shift_202603231405.mp4",
+        videoHint: "이 HTML 파일과 같은 폴더에 MP4 파일을 넣어주세요.",
+        sectionTitle: "깔끔하고 우아하며, 바로 배포하기 쉽게 설계했습니다",
+        sectionDesc: "구조를 의도적으로 단순하게 만들어 HTML 파일 하나와 영상 파일만 GitHub에 올려도 GitHub Pages를 통해 바로 완성도 있는 소개 페이지를 공개할 수 있습니다.",
+        f1Title: "영상 중심의 구성",
+        f1Desc: "메인 모션 영상을 중심에 두고, 짧고 명확한 설명과 행동 유도 버튼으로 흐름을 정리했습니다.",
+        f2Title: "빠른 퍼블리싱",
+        f2Desc: "이 파일을 index.html로 사용하고 MP4와 함께 업로드하면 별도 프레임워크 없이도 GitHub Pages에서 바로 공개할 수 있습니다.",
+        f3Title: "유연한 사용자 경험",
+        f3Desc: "언어 전환과 테마 전환 버튼을 넣어 다양한 관람 환경과 다양한 사용자에게 자연스럽게 대응할 수 있습니다.",
+        ctaTitle: "이제 바로 배포하세요",
+        ctaDesc: "파일명을 index.html로 맞추고, 영상 파일을 같은 폴더에 둔 뒤 GitHub 저장소에 업로드하고 GitHub Pages를 켜면 됩니다.",
+        ctaButton: "모션 다시 보기",
+        footer: "캐릭터 모션 쇼케이스를 위한 원페이지 랜딩 페이지 템플릿입니다."
+      }
+    };
+
+    const langToggle = document.getElementById('langToggle');
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    let currentLang = localStorage.getItem('lang') || 'en';
+    let currentTheme = localStorage.getItem('theme') || 'light';
+
+    function applyLanguage(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) el.textContent = translations[lang][key];
+      });
+      langToggle.textContent = lang === 'en' ? '한국어' : 'English';
+      localStorage.setItem('lang', lang);
+      currentLang = lang;
+    }
+
+    function applyTheme(theme) {
+      body.classList.toggle('dark', theme === 'dark');
+      themeToggle.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+      localStorage.setItem('theme', theme);
+      currentTheme = theme;
+    }
+
+    langToggle.addEventListener('click', () => {
+      applyLanguage(currentLang === 'en' ? 'ko' : 'en');
+    });
+
+    themeToggle.addEventListener('click', () => {
+      applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+    });
+
+    applyLanguage(currentLang);
+    applyTheme(currentTheme);
+  </script>
+</body>
+</html>
